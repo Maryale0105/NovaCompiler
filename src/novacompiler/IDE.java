@@ -241,7 +241,7 @@ public class IDE extends javax.swing.JFrame {
     private javax.swing.JButton BTN_NuevoDoc;
     private javax.swing.JButton BTN_Tokens;
     private javax.swing.JTextArea JTA_Terminal;
-    private javax.swing.JTextPane JTPCodigo;
+    public javax.swing.JTextPane JTPCodigo;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }
