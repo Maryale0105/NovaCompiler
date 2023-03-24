@@ -11,7 +11,7 @@ import compilerTools.Token;
     }
 %}
 /* Variables básicas de comentarios y espacios */
-TerminadorDeLinea = \r|\n|\r\n
+TerminadorDeLinea = \n
 EntradaDeCaracter = [^\r\n]
 EspacioEnBlanco = {TerminadorDeLinea} | [ \t\f]
 ComentarioTradicional = "/*" [^*] ~"*/" | "/*" "*"+ "/"
@@ -27,11 +27,17 @@ Letra = [A-Za-zÑñ_ÁÉÍÓÚáéíóúÜü]
 Digito = [0-9]
 Identificador = {Letra}({Letra}|{Digito})*
 
-/* Número */
-Numero = 0 | [1-9][0-9]*
+/* Tipo de Datos */
+ent = {Digito}{Digito}*
+dec = {ent}","{ent}
+ing = {Letra}{Letra}*
+cad = {Identificador}
 %%
+
 /* Comentarios o espacios en blanco */
 {Comentario}|{EspacioEnBlanco} { /*Ignorar*/ }
+
+{TerminadorDeLinea} { return token(yytext(), "FIN_LINEA", yyline, yycolumn); }
 
 /* Identificador */
 \#{Identificador} { return token(yytext(), "IDENTIFICADOR", yyline, yycolumn); }
@@ -42,8 +48,17 @@ ent |
 ing |
 cad { return token(yytext(), "TIPO_DATO", yyline, yycolumn); }
 
-/* Número */
-{Numero} { return token(yytext(), "NUMERO", yyline, yycolumn); }
+/* Entero */
+{ent} { return token(yytext(), "ENT", yyline, yycolumn); }
+
+/* Decimal */
+{dec} { return token(yytext(), "DEC", yyline, yycolumn); }
+
+/* Ingrediente */
+{ing} { return token(yytext(), "ING", yyline, yycolumn); }
+
+/* Cadenas */
+{cad} { return token(yytext(), "CAD", yyline, yycolumn); }
 
 /* Operadores de agrupación */
 "(" { return token(yytext(), "PARENTESIS_A", yyline, yycolumn); }
@@ -56,6 +71,14 @@ cad { return token(yytext(), "TIPO_DATO", yyline, yycolumn); }
 
 /* Operador de asignación */
 \<- { return token (yytext(), "OP_ASIG", yyline, yycolumn); }
+
+/* Estructura si */
+si |
+sino { return token(yytext(), "ESTRUCTURA_SI", yyline, yycolumn); }
+
+/* Repetir */
+hacer |
+mientras { return token(yytext(), "REPETIR", yyline, yycolumn); }
 
 /* Palabras claves */
 si |

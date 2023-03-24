@@ -27,13 +27,18 @@ Letra = [A-Za-zÑñ_ÁÉÍÓÚáéíóúÜü]
 Digito = [0-9]
 Identificador = {Letra}({Letra}|{Digito})*
 
-/* Número */
-Numero = 0 | [1-9][0-9]*
+/* Tipo de Datos */
+ent = {Digito}{Digito}*
+dec = {ent}","{ent}
+ing = {Letra}{Letra}*
+cad = {Identificador}
 %%
 
 /* Comentarios o espacios en blanco */
 {Comentario} { return textColor(yychar, yylength(), new Color(146, 146, 146)); }
 {EspacioEnBlanco} { /*Ignorar*/ }
+
+{TerminadorDeLinea} { /*Ignorar*/ }
 
 
 /* Identificador */
@@ -45,8 +50,17 @@ ent |
 ing |
 cad { return textColor(yychar, yylength(), new Color(64, 224, 208)); }
 
-/* Número */
-{Numero} { return textColor(yychar, yylength(), new Color(0, 191, 255)); }
+/* Entero */
+{ent} { return textColor(yychar, yylength(), new Color(64, 224, 208)); }
+
+/* Decimal */
+{dec} { return textColor(yychar, yylength(), new Color(64, 224, 208)); }
+
+/* Ingrediente */
+{ing} { return textColor(yychar, yylength(), new Color(64, 224, 208)); }
+
+/* Cadenas */
+{cad} { return textColor(yychar, yylength(), new Color(64, 224, 208)); }
 
 /* Operadores de agrupación */
 "(" { return textColor(yychar, yylength(), new Color(0, 191, 255)); }
@@ -59,6 +73,15 @@ cad { return textColor(yychar, yylength(), new Color(64, 224, 208)); }
 
 /* Operador de asignación */
 \<- { return textColor(yychar, yylength(), new Color(0, 191, 255)); }
+
+
+/* Estructura si */
+si |
+sino { return textColor(yychar, yylength(), new Color(0, 191, 255)); }
+
+/* Repetir */
+hacer |
+mientras { return textColor(yychar, yylength(), new Color(0, 191, 255)); }
 
 /* Palabras claves */
 si |
